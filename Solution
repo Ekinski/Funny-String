@@ -1,0 +1,68 @@
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Collections;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
+using System.Text;
+using System;
+
+class Solution {
+
+    // Complete the funnyString function below.
+    static string funnyString(string s) {
+        char[] alphabet = "abcdefghijklmnopqrstuvwxyz".ToCharArray();
+        char[] words = s.ToCharArray();
+        int[] numbers = new int [words.Length];
+        for( int a = 0; a < words.Length; a++){
+            int num = Array.IndexOf(alphabet, words[a]) +97;
+            numbers[a] = num;
+        }
+        int[] diff = new int [numbers.Length -1];
+        int[] diffx = new int [numbers.Length -1];
+        int count = 0;
+        for ( int b = numbers.Length -1; b > 0; b--){
+            int answer = Math.Abs(numbers[b] - numbers[b -1]);
+            diff[count] = answer;
+            count++; 
+        }
+        Array.Reverse(numbers, 0, numbers.Length);
+        count = 0;
+        for ( int b = numbers.Length -1; b > 0; b--){
+            int answer = Math.Abs(numbers[b -1] - numbers[b]);
+            diffx[count] = answer;
+            count++; 
+        }
+        for (int g = 0; g < diffx.Length; g++){
+            if ( diffx[g] == diff[g]){
+                continue;
+            } else {
+                return "Not Funny";
+                break;
+            }
+        }
+        return "Funny";
+    }
+
+    static void Main(string[] args) {
+        TextWriter textWriter = new StreamWriter(@System.Environment.GetEnvironmentVariable("OUTPUT_PATH"), true);
+
+        int q = Convert.ToInt32(Console.ReadLine());
+
+        for (int qItr = 0; qItr < q; qItr++) {
+            string s = Console.ReadLine();
+
+            string result = funnyString(s);
+
+            textWriter.WriteLine(result);
+        }
+
+        textWriter.Flush();
+        textWriter.Close();
+    }
+}
